@@ -1,0 +1,2 @@
+# No third-party Python packages are required.
+# Runtime code intentionally uses the Python 3.12 standard library only.

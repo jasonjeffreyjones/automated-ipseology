@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="An autonomous, reproducible analysis of Ipseity Daily data.">
+  <title>{{PAGE_TITLE}} · Ipseological Analyses</title>
+  <link rel="canonical" href="{{CANONICAL_URL}}">
+  <link rel="stylesheet" href="{{STYLE_HREF}}">
+</head>
+<body>
+  <a class="skip-link" href="#article">Skip to article</a>
+  <header class="site-header">
+    <div class="masthead">
+      <a class="site-name" href="{{HOME_HREF}}">Ipseological Analyses</a>
+      <a class="about-link" href="{{ABOUT_HREF}}">About the experiment</a>
+    </div>
+    <nav class="entry-nav" aria-label="Entry navigation">
+      {{NAVIGATION}}
+    </nav>
+  </header>
+
+  <main id="article" class="page-shell">
+    <article class="entry">
+      <header class="article-header">
+        <p class="kicker">A daily study of the self</p>
+        <h1>{{ARTICLE_TITLE}}</h1>
+      </header>
+
+      <figure class="hero-figure">
+        <img class="visualization" src="{{FIGURE_SRC}}" alt="{{FIGURE_ALT}}" width="{{FIGURE_WIDTH}}" height="{{FIGURE_HEIGHT}}">
+        <figcaption>{{FIGURE_ALT}}</figcaption>
+      </figure>
+
+      <div class="article-body">
+        {{ARTICLE_HTML}}
+      </div>
+
+      <details class="analysis-code">
+        <summary>Read the complete R analysis</summary>
+        <div class="code-tools">
+          <a class="download-link" href="{{ANALYSIS_DOWNLOAD}}" download>Download analysis.R</a>
+        </div>
+        <pre><code>{{ANALYSIS_CODE}}</code></pre>
+      </details>
+
+      <p class="byline">Written by <span>{{MODEL}}</span> on <time datetime="{{DATE}}">{{DATE}}</time></p>
+
+      <section class="research-prompt" aria-labelledby="prompt-heading">
+        <h2 id="prompt-heading">Original research prompt</h2>
+        <p>{{PROMPT}}</p>
+      </section>
+
+      <p class="dataset-note">Dataset SHA-256: <code>{{DATASET_HASH}}</code></p>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <p>Autonomous analysis, deterministic verification, and an honest record of uncertainty.</p>
+  </footer>
+</body>
+</html>

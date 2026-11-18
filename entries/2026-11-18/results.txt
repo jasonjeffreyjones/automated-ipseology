@@ -1,0 +1,38 @@
+Male–Female endorsement differences in the Ipseity Daily snapshot
+Snapshot dates: 2025-07-08 through 2026-11-16 (482 observed dates)
+Male or Female answer dates: 2025-07-08 through 2026-11-16 (482 observed dates)
+Sample	Response observations	Respondent-days	Unique respondents
+Full snapshot	793108	10155	5464
+Male or Female	787987	10086	5413
+Male	368305	4725	2378
+Female	419682	5361	3035
+Missing	2310	32	24
+Other reported value	2811	37	30
+Male or Female respondents answering on multiple dates: 1686
+Respondents with both Male and Female records: 0
+Signifiers in the snapshot: 707
+Signifiers with a Male or Female answer: 707
+Minimum per signifier and sex: 50 observations and 20 respondents
+Eligible signifiers: 704
+Snapshot signifiers outside the ranking: 3
+Ranked signifiers shown: 10
+Among those shown, higher Male rate: 5; higher Female rate: 5
+Ranked sex-specific answer counts: 205 to 5334
+Ranked sex-specific unique-respondent counts: 183 to 3019
+Simultaneous confidence level: 95%
+Shown intervals excluding zero: 10
+
+Rates are per completed answer. For a given signifier and sex, response observations equal respondent-days.
+Difference is Male minus Female in percentage points; ranked on absolute magnitude before rounding.
+Intervals use respondent-cluster Hoeffding bounds with Bonferroni adjustment across all eligible signifiers.
+Rank	Signifier	Male Yes	Male observations	Male respondents	Male rate (%)	Female Yes	Female observations	Female respondents	Female rate (%)	Gap (pp)	Lower (pp)	Upper (pp)
+1	male	4614	4669	2368	98.8	43	5334	3019	0.8	+98.0	+87.1	+100.0
+2	woman	2	205	186	1.0	266	270	254	98.5	-97.5	-100.0	-74.4
+3	man	654	663	529	98.6	9	731	621	1.2	+97.4	+81.1	+100.0
+4	guy	205	212	190	96.7	4	276	261	1.4	+95.2	+72.5	+100.0
+5	she/her	5	218	199	2.3	256	265	248	96.6	-94.3	-100.0	-70.6
+6	daughter	7	657	513	1.1	706	752	636	93.9	-92.8	-100.0	-76.8
+7	he/him	216	227	212	95.2	6	252	228	2.4	+92.8	+70.1	+100.0
+8	son	210	225	198	93.3	4	268	248	1.5	+91.8	+68.1	+100.0
+9	girl	8	674	523	1.2	692	772	655	89.6	-88.5	-100.0	-72.6
+10	sister	1	208	183	0.5	221	259	246	85.3	-84.8	-100.0	-61.1

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="About Ipseological Analyses, an experiment in autonomous social science.">
+  <title>{{PAGE_TITLE}}</title>
+  <link rel="canonical" href="{{CANONICAL_URL}}">
+  <link rel="stylesheet" href="{{STYLE_HREF}}">
+</head>
+<body>
+  <a class="skip-link" href="#about">Skip to content</a>
+  <header class="site-header compact-header">
+    <div class="masthead">
+      <a class="site-name" href="{{HOME_HREF}}">Ipseological Analyses</a>
+      <a class="about-link current" href="about.html" aria-current="page">About the experiment</a>
+    </div>
+  </header>
+
+  <main id="about" class="page-shell">
+    <article class="about-page">
+      <p class="kicker">Methods before mystique</p>
+      <h1>An ongoing experiment in autonomous social science</h1>
+
+      <p class="standfirst">Once a day, a language model asks a focused question of the latest Ipseity Daily data. A deterministic program checks the work, rebuilds the site, and publishes only when every required piece passes.</p>
+
+      <h2>What is being studied?</h2>
+      <p><a href="https://jasonjones.ninja/social-science-dashboard-inator/ipseity-daily/">Ipseity Daily</a> asks adults whether words and phrases—identity <em>signifiers</em>—describe them today. The resulting data offer an unusual view of self-description over time. Ipseology is the study of human identity with large datasets and computational methods; this site is a running notebook for that new field.</p>
+
+      <h2>What is autonomous, and what is not?</h2>
+      <p>The research question is drawn from a list written by the project owner. Codex chooses the statistical approach, writes and executes a complete tidyverse R script, creates one figure, and explains the result. Python handles the parts that should not be improvised: obtaining and hashing the authorized data, enforcing privacy and scientific checks, rerunning R in a clean networkless sandbox, escaping article text, building navigation, committing the record, and deploying the static files.</p>
+
+      <p>The analyst cannot change old entries, install software, publish on its own, or receive deployment credentials. Failed checks stop the publication. Null findings are welcome. The system is designed to leave an auditable failure rather than improvise a success.</p>
+
+      <h2>How should these articles be read?</h2>
+      <p>Each entry is one exploratory analysis, not a peer-reviewed paper and not a causal verdict. People can participate on more than one date; signifiers are not necessarily asked of everyone; demographic data can be missing; and the surveyed participants are not automatically representative of every American adult. Articles are required to discuss the unit of analysis, denominators, sample sizes, uncertainty, and relevant limitations.</p>
+
+      <p>The absence of a response is especially important: it does not show that someone rejected a signifier. It may simply show that the person was never asked. The pipeline preserves that distinction and rejects analyses that silently turn missing questions into No answers.</p>
+
+      <h2>Reproducibility and provenance</h2>
+      <p>Every permanent dated page provides its complete R code and identifies the exact model, publication date, original prompt, and SHA-256 hash of the data snapshot. The visualization is regenerated from the code before publication. Operational logs and respondent-level data remain private; neither raw identifiers nor pseudonymous respondent hashes belong in an article.</p>
+
+      <p>This separation is intentional: public evidence should be sufficient to inspect the method, while private research materials should not become a second route to individual records. The website has no JavaScript, tracking database, account system, or content management system.</p>
+
+      <aside class="principle-card">
+        <p class="principle-label">The governing principle</p>
+        <p>Automation may make inquiry more frequent. It does not make evidence stronger than the design that produced it.</p>
+      </aside>
+
+      <p><a class="text-link" href="{{HOME_HREF}}">Return to the latest analysis</a></p>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <p>Ipseological Analyses · An experiment in reproducible autonomous research</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "dataset_latest_observation_date": "2026-11-16",
+  "dataset_rows": 793108,
+  "dataset_sha256": "9d876e7755198144adcb39b2ad5bee754fa2ec9f5d1ebbf3078bfe2fe4d546af",
+  "dataset_manifest": "data/manifests/2026-11-18.json",
+  "date": "2026-11-18",
+  "figure_alt": "Horizontal dot-and-interval plot of Male minus Female Yes rates in percentage points for the ten largest gaps. Five dots favor each group. The largest gaps are for male (+98.0 points), woman (−97.5), and man (+97.4). Every displayed interval stays on its group's side of zero.",
+  "generated_at_utc": "2026-11-18T15:05:53.450288+00:00",
+  "model": "gpt-6.2-sol",
+  "prompt": "Report the 10 signifiers with the largest Male-Female endorsement rate difference.",
+  "prompt_id": "b198c62178efb2be",
+  "prompt_line_number": 5,
+  "title": "The Ten Largest Male–Female Endorsement Gaps"
+}

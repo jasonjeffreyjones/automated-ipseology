@@ -1,0 +1,8 @@
+Between Cleveland Browns fans and Buffalo Bills fans, which have reported more happiness (use the happy signifier)? Estimate how much more.
+Report the 50 signifiers that are most diagnostic of a happy endorsement (1) versus not (0).
+Examine weekday versus weekend effects for happy.
+Examine weekday versus weekend difference for tired.
+Report the 10 signifiers with the largest Male-Female endorsement rate difference.
+Report the 10 signifiers with the largest Older-Younger difference; use over 40 as Older.
+Choose one aignifier at random. Plot a daily prevalence series as best as can be estimated. Discuss.
+

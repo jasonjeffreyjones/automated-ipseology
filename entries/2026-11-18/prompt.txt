@@ -1,0 +1,1 @@
+Report the 10 signifiers with the largest Male-Female endorsement rate difference.

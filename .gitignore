@@ -1,0 +1,23 @@
+# Local configuration and environments
+.env
+.venv/
+__pycache__/
+*.py[cod]
+
+# Private data and autonomous working material
+data/snapshots/*
+!data/snapshots/.gitkeep
+.work/*
+!.work/.gitkeep
+logs/*
+!logs/.gitkeep
+provenance/*
+!provenance/.gitkeep
+state/run-state/*
+!state/run-state/.gitkeep
+state/generate.lock
+
+# Editor and operating-system noise
+*.swp
+*~
+.DS_Store
