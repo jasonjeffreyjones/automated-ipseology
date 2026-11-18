@@ -3,6 +3,23 @@ Report the 50 signifiers that are most diagnostic of a happy endorsement (1) ver
 Examine weekday versus weekend effects for happy.
 Examine weekday versus weekend difference for tired.
 Report the 10 signifiers with the largest Male-Female endorsement rate difference.
-Report the 10 signifiers with the largest Older-Younger difference; use over 40 as Older.
-Choose one aignifier at random. Plot a daily prevalence series as best as can be estimated. Discuss.
+Report the 10 signifiers with the largest Older-Younger endorsement rate difference; use over 40 years old as Older.
+Choose one signifier at random. Plot a daily prevalence series as best as can be estimated. Discuss.
+Report the 10 signifiers with the largest Male-Female endorsement rate difference after excluding these: male, woman, man, guy, she/her, he/him, daughter, son, girl, sister. Discuss the potential meaning more than methodology.
+Report the 20 signifiers that are most diagnostic of a Republican Yes versus No. Discuss the potential meaning more than methodology.
+Report the 20 signifiers that are most diagnostic of a Democrat Yes versus No. Discuss the potential meaning more than methodology.
+Report the 20 signifiers that are most diagnostic of a dad Yes versus No. Discuss the potential meaning more than methodology.
+Among repeat participants, which frequently asked signifiers show the greatest within-person stability, and which show the most switching, counting only respondent–signifier pairs observed on multiple dates?
+Does the proportion of asked signifiers that a person endorses tend to change across repeated participation, after accounting for differences in which signifiers were presented?
+Among repeated respondent–signifier observations, does a longer interval between sessions correspond to a greater chance of changing an answer?
+For widely observed signifiers, how much of the change over calendar time reflects changing participant composition versus changes within repeat participants?
+Are any common signifiers endorsed differently across days of the week, after controlling for calendar trends and ensuring that differences in question availability are not mistaken for non-endorsement?
+Which common signifiers have the strongest age gradients, and are those relationships approximately linear or concentrated in particular age ranges?
+Which sex differences in endorsement are consistent across age groups, and which apparent overall differences shrink or reverse after accounting for age?
+How do endorsement patterns differ between participants who report living in their birth country and those who report living elsewhere, using only groups and signifiers with adequate sample sizes?
+How do students, employed non-students, and participants in other employment situations differ in the proportion and types of signifiers they endorse?
+Is time spent completing a session associated with the proportion of presented signifiers endorsed, and does the relationship persist after accounting for the number and composition of questions asked?
+Is prior survey-taking experience, as approximated by approval count, associated with endorsement behavior or response time?
+Which pairs of signifiers are most strongly associated when they are presented to the same respondent on the same date, and which associations remain reliable after excluding sparse pairs?
+How stable is the popularity ranking of commonly asked signifiers from month to month, and which signifiers have experienced the clearest sustained changes?
 
