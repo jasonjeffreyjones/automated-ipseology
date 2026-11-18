@@ -28,19 +28,21 @@
       <p><a href="https://jasonjones.ninja/social-science-dashboard-inator/ipseity-daily/">Ipseity Daily</a> asks adults whether words and phrases—identity <em>signifiers</em>—describe them today. The resulting data offer an unusual view of self-description over time. Ipseology is the study of human identity with large datasets and computational methods; this site is a running notebook for that new field.</p>
 
       <h2>What is autonomous, and what is not?</h2>
-      <p>The research question is drawn from a list written by the project owner. Codex chooses the statistical approach, writes and executes a complete tidyverse R script, creates one figure, and explains the result. Python handles the parts that should not be improvised: obtaining and hashing the authorized data, enforcing privacy and scientific checks, rerunning R in a clean networkless sandbox, escaping article text, building navigation, committing the record, and deploying the static files.</p>
+      <p>The research question is drawn from a list written by <a href="https://jasonjones.ninja/">Dr. Jason Jeffrey Jones</a>. Codex chooses the statistical approach, writes and executes a complete tidyverse R script, creates one figure, and explains the result. Python handles the parts that should not be improvised: obtaining and hashing the authorized data, enforcing privacy and scientific checks, rerunning R in a clean networkless sandbox, escaping article text, building navigation, committing the record, and deploying the static files.</p>
 
       <p>The analyst cannot change old entries, install software, publish on its own, or receive deployment credentials. Failed checks stop the publication. Null findings are welcome. The system is designed to leave an auditable failure rather than improvise a success.</p>
 
       <h2>How should these articles be read?</h2>
-      <p>Each entry is one exploratory analysis, not a peer-reviewed paper and not a causal verdict. People can participate on more than one date; signifiers are not necessarily asked of everyone; demographic data can be missing; and the surveyed participants are not automatically representative of every American adult. Articles are required to discuss the unit of analysis, denominators, sample sizes, uncertainty, and relevant limitations.</p>
+      <p>Each entry is one exploratory analysis, not a peer-reviewed paper and not a causal verdict. Respondents may be resampled on more than one date; signifiers are not necessarily asked of everyone; demographic data can be missing; and the surveyed participants are not automatically representative of every American adult. Articles are required to discuss the unit of analysis, denominators, sample sizes, uncertainty, and relevant limitations.</p>
 
-      <p>The absence of a response is especially important: it does not show that someone rejected a signifier. It may simply show that the person was never asked. The pipeline preserves that distinction and rejects analyses that silently turn missing questions into No answers.</p>
+      <p>The absence of a response is especially important: it does not show that someone rejected a signifier. It may simply show that the person was never asked. For each signifier, the respondent may choose Yes, No or Skip. The pipeline preserves that distinction and rejects analyses that silently turn missing questions into No answers.</p>
 
       <h2>Reproducibility and provenance</h2>
-      <p>Every permanent dated page provides its complete R code and identifies the exact model, publication date, original prompt, and SHA-256 hash of the data snapshot. The visualization is regenerated from the code before publication. Operational logs and respondent-level data remain private; neither raw identifiers nor pseudonymous respondent hashes belong in an article.</p>
+      <p>Every permanent dated page provides its complete R code and identifies the exact model, publication date, original prompt, and SHA-256 hash of the data snapshot.</p>
+      <p>Inspect code in <a href="https://github.com/jasonjeffreyjones/automated-ipseology">this GitHub repo</a>.</p>
 
-      <p>This separation is intentional: public evidence should be sufficient to inspect the method, while private research materials should not become a second route to individual records. The website has no JavaScript, tracking database, account system, or content management system.</p>
+      <h2>Simplicity</h2>
+      <p>This blog has no JavaScript, tracking database, account system, or content management system.</p>
 
       <aside class="principle-card">
         <p class="principle-label">The governing principle</p>
