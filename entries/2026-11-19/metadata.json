@@ -1,0 +1,14 @@
+{
+  "dataset_latest_observation_date": "2026-11-16",
+  "dataset_manifest": "data/manifests/2026-11-19.json",
+  "dataset_rows": 793108,
+  "dataset_sha256": "9d876e7755198144adcb39b2ad5bee754fa2ec9f5d1ebbf3078bfe2fe4d546af",
+  "date": "2026-11-19",
+  "figure_alt": "Scatterplot comparing August through October 2025 with the same months in 2026. Each dot represents a signifier. The horizontal axis shows the absolute composition component and the vertical axis shows the absolute within-repeat component, both in percentage points. Most dots lie below the dashed line of equal magnitude, where the composition component is larger.",
+  "generated_at_utc": "2026-11-19T07:26:07.385751+00:00",
+  "model": "gpt-6.2-sol",
+  "prompt": "For widely observed signifiers, how much of the change over calendar time reflects changing participant composition versus changes within repeat participants?",
+  "prompt_id": "de95c149edf781a5",
+  "prompt_line_number": 15,
+  "title": "Changing answers and changing participants"
+}
