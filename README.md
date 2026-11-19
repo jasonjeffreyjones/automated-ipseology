@@ -12,12 +12,19 @@ The analyst working directory is populated only with the canonical snapshot plus
 
 The site itself is plain HTML and CSS. It uses no JavaScript, database, CMS, or web framework.
 
+Each site render also rebuilds `website/feed.xml` from the newest 30 dated entries and
+`website/sitemap.xml` from the complete entry archive. The same renderer adds canonical,
+Open Graph, RSS-autodiscovery, and Schema.org `BlogPosting` metadata to the generated
+HTML. Entry metadata remains the single source of publication and modification dates, so
+retries reproduce stable URLs, GUIDs, timestamps, and structured data without a separate
+scheduled process.
+
 ## Repository layout
 
 | Path | Purpose | Git policy |
 | --- | --- | --- |
 | `entries/YYYY-MM-DD/` | Public-safe source artifacts for each entry | Tracked |
-| `website/` | Complete rsync-ready static site | Tracked |
+| `website/` | Complete rsync-ready static site, RSS feed, and XML sitemap | Tracked |
 | `data/manifests/` | Dataset hash, coverage, counts, and source reference | Tracked |
 | `data/snapshots/` | The one latest validated canonical CSV snapshot | Private/ignored |
 | `state/prompt-history.jsonl` | Successful publication history used by prompt selection | Tracked on the following publication |

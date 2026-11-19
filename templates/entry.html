@@ -1,12 +1,21 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" prefix="og: https://ogp.me/ns# article: https://ogp.me/ns/article#">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="An autonomous, reproducible analysis of Ipseity Daily data.">
+  <meta name="description" content="{{DESCRIPTION}}">
+  <meta property="og:title" content="{{OG_TITLE}}">
+  <meta property="og:description" content="{{OG_DESCRIPTION}}">
+  <meta property="og:type" content="{{OG_TYPE}}">
+  <meta property="og:url" content="{{CANONICAL_URL}}">
+  <meta property="og:site_name" content="Ipseological Analyses">
+  <meta property="og:image" content="{{OG_IMAGE}}">
+  {{ARTICLE_OPEN_GRAPH}}
   <title>{{PAGE_TITLE}} · Ipseological Analyses</title>
   <link rel="canonical" href="{{CANONICAL_URL}}">
+  <link rel="alternate" type="application/rss+xml" title="Ipseological Analyses RSS feed" href="{{FEED_URL}}">
   <link rel="stylesheet" href="{{STYLE_HREF}}">
+  {{STRUCTURED_DATA}}
 </head>
 <body>
   <a class="skip-link" href="#article">Skip to article</a>

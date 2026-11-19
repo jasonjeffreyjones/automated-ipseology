@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+from email.utils import format_datetime, parsedate_to_datetime
 import fcntl
 import gzip
 import hashlib
@@ -23,6 +24,7 @@ import subprocess
 import sys
 import tempfile
 import textwrap
+import xml.etree.ElementTree as ET
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta, timezone
 from typing import Any, Sequence
@@ -32,6 +34,11 @@ from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parent
 UTC = timezone.utc
+SITE_TITLE = "Ipseological Analyses"
+SITE_DESCRIPTION = "An autonomous, reproducible analysis of Ipseity Daily data."
+SITE_LANGUAGE = "en-US"
+ATOM_NAMESPACE = "http://www.w3.org/2005/Atom"
+SITEMAP_NAMESPACE = "http://www.sitemaps.org/schemas/sitemap/0.9"
 EXPECTED_COLUMNS = (
     "endorsed",
     "signifier",
@@ -221,6 +228,19 @@ def atomic_write(path: Path, content: str | bytes, mode: int = 0o644) -> None:
         os.replace(temporary, path)
     finally:
         temporary.unlink(missing_ok=True)
+
+
+def atomic_write_if_changed(
+    path: Path, content: str | bytes, mode: int = 0o644
+) -> bool:
+    """Write atomically only when bytes differ, preserving stable deployment mtimes."""
+    data = content.encode("utf-8") if isinstance(content, str) else content
+    if path.is_file() and not path.is_symlink() and path.read_bytes() == data:
+        if (path.stat().st_mode & 0o777) != mode:
+            os.chmod(path, mode)
+        return False
+    atomic_write(path, data, mode)
+    return True
 
 
 def atomic_json(path: Path, value: Any) -> None:
@@ -1156,6 +1176,122 @@ def navigation_html(
     return "\n".join(items)
 
 
+def article_summary(source: str, limit: int = 320) -> str:
+    """Return a stable plain-text summary from the article's opening paragraph."""
+    summary = ""
+    for block in re.split(r"\n\s*\n", source.strip()):
+        lines = [line.strip() for line in block.splitlines() if line.strip()]
+        if not lines:
+            continue
+        if re.match(r"^(?:#{1,6}\s|```|>|[-+]\s|\d+[.)]\s)", lines[0]):
+            continue
+        summary = " ".join(lines)
+        break
+    summary = re.sub(r"!\[([^\]]*)\]\([^)]+\)", r"\1", summary)
+    summary = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", summary)
+    summary = re.sub(r"[`*_~]", "", summary)
+    summary = " ".join(html.unescape(summary).split())
+    if not summary:
+        raise WorkflowError("Article has no paragraph suitable for a description")
+    return textwrap.shorten(
+        summary,
+        width=limit,
+        placeholder="…",
+        break_long_words=False,
+        break_on_hyphens=False,
+    )
+
+
+def metadata_datetime(metadata: dict[str, Any], field: str) -> datetime | None:
+    raw = metadata.get(field)
+    if raw is None:
+        return None
+    try:
+        value = datetime.fromisoformat(str(raw).replace("Z", "+00:00"))
+    except ValueError as exc:
+        raise WorkflowError(f"Entry metadata has invalid {field}: {raw!r}") from exc
+    if value.tzinfo is None:
+        raise WorkflowError(f"Entry metadata {field} must include a UTC offset")
+    return value.astimezone(UTC)
+
+
+def entry_published_datetime(entry_date: date, metadata: dict[str, Any]) -> datetime:
+    published = metadata_datetime(metadata, "published_at_utc")
+    if published is not None:
+        return published
+    generated = metadata_datetime(metadata, "generated_at_utc")
+    if generated is not None and generated.date() == entry_date:
+        return generated
+    return datetime.combine(entry_date, datetime.min.time(), tzinfo=UTC)
+
+
+def entry_modified_datetime(entry_date: date, metadata: dict[str, Any]) -> datetime:
+    return (
+        metadata_datetime(metadata, "modified_at_utc")
+        or metadata_datetime(metadata, "generated_at_utc")
+        or entry_published_datetime(entry_date, metadata)
+    )
+
+
+def iso_utc(value: datetime) -> str:
+    return value.astimezone(UTC).isoformat().replace("+00:00", "Z")
+
+
+def json_for_html(value: Any) -> str:
+    """Serialize JSON safely for a script element without changing its values."""
+    rendered = json.dumps(
+        value, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+    )
+    return (
+        rendered.replace("&", r"\u0026")
+        .replace("<", r"\u003c")
+        .replace(">", r"\u003e")
+        .replace("\u2028", r"\u2028")
+        .replace("\u2029", r"\u2029")
+    )
+
+
+def entry_url(base_url: str, entry_date: date) -> str:
+    return base_url + entry_date.isoformat() + "/"
+
+
+def entry_image_url(base_url: str, entry_date: date) -> str:
+    return entry_url(base_url, entry_date) + "visualization.png"
+
+
+def blog_posting_json_ld(
+    entry_date: date,
+    metadata: dict[str, Any],
+    summary: str,
+    base_url: str,
+) -> str:
+    canonical = entry_url(base_url, entry_date)
+    model = str(metadata["model"])
+    value = {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Organization",
+            "description": f"Autonomous article generated by the {model} AI model.",
+            "name": "Ipseological Analyses autonomous AI analyst",
+            "url": base_url + "about.html",
+        },
+        "dateModified": iso_utc(entry_modified_datetime(entry_date, metadata)),
+        "datePublished": iso_utc(entry_published_datetime(entry_date, metadata)),
+        "description": summary,
+        "headline": str(metadata["title"]),
+        "image": entry_image_url(base_url, entry_date),
+        "mainEntityOfPage": {"@id": canonical, "@type": "WebPage"},
+        "publisher": {
+            "@type": "Organization",
+            "name": SITE_TITLE,
+            "url": base_url,
+        },
+        "url": canonical,
+    }
+    return json_for_html(value)
+
+
 def render_one_entry(
     entry_date: date,
     source: Path,
@@ -1171,12 +1307,41 @@ def render_one_entry(
     style_href = "style.css" if from_index else "../style.css"
     home_href = "./" if from_index else "../"
     about_href = "about.html" if from_index else "../about.html"
-    canonical = config.base_url if from_index else config.base_url + entry_date.isoformat() + "/"
+    permanent_url = entry_url(config.base_url, entry_date)
+    canonical = config.base_url if from_index else permanent_url
+    summary = article_summary(article)
+    description = SITE_DESCRIPTION if from_index else summary
+    og_title = SITE_TITLE if from_index else str(metadata["title"])
+    published = iso_utc(entry_published_datetime(entry_date, metadata))
+    article_open_graph = (
+        ""
+        if from_index
+        else '<meta property="article:published_time" content="'
+        + html.escape(published, quote=True)
+        + '">'
+    )
+    structured_data = (
+        ""
+        if from_index
+        else '<script type="application/ld+json">'
+        + blog_posting_json_ld(entry_date, metadata, summary, config.base_url)
+        + "</script>"
+    )
     return fill_template(
         ROOT / "templates/entry.html",
         {
             "PAGE_TITLE": html.escape(str(metadata["title"])),
             "CANONICAL_URL": html.escape(canonical, quote=True),
+            "DESCRIPTION": html.escape(description, quote=True),
+            "OG_TITLE": html.escape(og_title, quote=True),
+            "OG_DESCRIPTION": html.escape(description, quote=True),
+            "OG_TYPE": "website" if from_index else "article",
+            "OG_IMAGE": html.escape(
+                entry_image_url(config.base_url, entry_date), quote=True
+            ),
+            "ARTICLE_OPEN_GRAPH": article_open_graph,
+            "FEED_URL": html.escape(config.base_url + "feed.xml", quote=True),
+            "STRUCTURED_DATA": structured_data,
             "STYLE_HREF": style_href,
             "HOME_HREF": home_href,
             "ABOUT_HREF": about_href,
@@ -1197,6 +1362,64 @@ def render_one_entry(
     )
 
 
+def render_feed(
+    config: Config, entries: Sequence[tuple[date, Path, dict[str, Any]]]
+) -> bytes:
+    ET.register_namespace("atom", ATOM_NAMESPACE)
+    root = ET.Element("rss", {"version": "2.0"})
+    channel = ET.SubElement(root, "channel")
+    ET.SubElement(channel, "title").text = SITE_TITLE
+    ET.SubElement(channel, "link").text = config.base_url
+    ET.SubElement(channel, "description").text = SITE_DESCRIPTION
+    ET.SubElement(channel, "language").text = SITE_LANGUAGE
+    ET.SubElement(
+        channel,
+        f"{{{ATOM_NAMESPACE}}}link",
+        {
+            "href": config.base_url + "feed.xml",
+            "rel": "self",
+            "type": "application/rss+xml",
+        },
+    )
+    for entry_date, source, metadata in reversed(entries[-30:]):
+        canonical = entry_url(config.base_url, entry_date)
+        item = ET.SubElement(channel, "item")
+        ET.SubElement(item, "title").text = str(metadata["title"])
+        ET.SubElement(item, "link").text = canonical
+        guid = ET.SubElement(item, "guid", {"isPermaLink": "true"})
+        guid.text = canonical
+        ET.SubElement(item, "pubDate").text = format_datetime(
+            entry_published_datetime(entry_date, metadata), usegmt=True
+        )
+        ET.SubElement(item, "description").text = article_summary(
+            source.joinpath("article.md").read_text(encoding="utf-8")
+        )
+    ET.indent(root, space="  ")
+    return ET.tostring(root, encoding="utf-8", xml_declaration=True) + b"\n"
+
+
+def render_sitemap(
+    config: Config, entries: Sequence[tuple[date, Path, dict[str, Any]]]
+) -> bytes:
+    ET.register_namespace("", SITEMAP_NAMESPACE)
+    root = ET.Element(f"{{{SITEMAP_NAMESPACE}}}urlset")
+
+    def add_url(location: str, modified: datetime) -> None:
+        item = ET.SubElement(root, f"{{{SITEMAP_NAMESPACE}}}url")
+        ET.SubElement(item, f"{{{SITEMAP_NAMESPACE}}}loc").text = location
+        ET.SubElement(item, f"{{{SITEMAP_NAMESPACE}}}lastmod").text = iso_utc(modified)
+
+    newest_date, _, newest_metadata = entries[-1]
+    add_url(config.base_url, entry_modified_datetime(newest_date, newest_metadata))
+    for entry_date, _, metadata in entries:
+        add_url(
+            entry_url(config.base_url, entry_date),
+            entry_modified_datetime(entry_date, metadata),
+        )
+    ET.indent(root, space="  ")
+    return ET.tostring(root, encoding="utf-8", xml_declaration=True) + b"\n"
+
+
 def render_site(config: Config) -> None:
     entries = load_entry_sources()
     if not entries:
@@ -1215,10 +1438,10 @@ def render_site(config: Config) -> None:
             from_index=False,
             config=config,
         )
-        atomic_write(target_dir / "index.html", page)
+        atomic_write_if_changed(target_dir / "index.html", page)
         for name in ("analysis.R", "visualization.png"):
             content = (source / name).read_bytes()
-            atomic_write(target_dir / name, content)
+            atomic_write_if_changed(target_dir / name, content)
 
     newest_date, newest_source, newest_metadata = entries[-1]
     index_page = render_one_entry(
@@ -1229,38 +1452,186 @@ def render_site(config: Config) -> None:
         from_index=True,
         config=config,
     )
-    atomic_write(website / "index.html", index_page)
+    atomic_write_if_changed(website / "index.html", index_page)
+    atomic_write_if_changed(website / "feed.xml", render_feed(config, entries))
+    atomic_write_if_changed(website / "sitemap.xml", render_sitemap(config, entries))
     about = fill_template(
         ROOT / "templates/about.html",
         {
             "PAGE_TITLE": "About Ipseological Analyses",
             "CANONICAL_URL": html.escape(config.base_url + "about.html", quote=True),
+            "FEED_URL": html.escape(config.base_url + "feed.xml", quote=True),
             "STYLE_HREF": "style.css",
             "HOME_HREF": "./",
         },
     )
-    atomic_write(website / "about.html", about)
+    atomic_write_if_changed(website / "about.html", about)
 
 
 class SiteHTMLParser(HTMLParser):
     def __init__(self) -> None:
         super().__init__(convert_charrefs=True)
         self.references: list[str] = []
-        self.script_tags = 0
+        self.links: list[dict[str, str]] = []
+        self.meta_names: dict[str, list[str]] = {}
+        self.meta_properties: dict[str, list[str]] = {}
+        self.scripts: list[dict[str, str]] = []
+        self._current_script: dict[str, str] | None = None
         self.images = 0
         self.details = 0
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
-        values = dict(attrs)
+        tag = tag.lower()
+        values = {key.lower(): value or "" for key, value in attrs}
         if tag == "script":
-            self.script_tags += 1
+            script = {"type": values.get("type", "").lower(), "content": ""}
+            self.scripts.append(script)
+            self._current_script = script
         if tag == "img":
             self.images += 1
         if tag == "details":
             self.details += 1
+        if tag == "link":
+            self.links.append(values)
+        if tag == "meta":
+            if values.get("name"):
+                self.meta_names.setdefault(values["name"].lower(), []).append(
+                    values.get("content", "")
+                )
+            if values.get("property"):
+                self.meta_properties.setdefault(
+                    values["property"].lower(), []
+                ).append(values.get("content", ""))
         for attribute in ("href", "src"):
             if values.get(attribute):
                 self.references.append(str(values[attribute]))
+
+    def handle_data(self, data: str) -> None:
+        if self._current_script is not None:
+            self._current_script["content"] += data
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag.lower() == "script":
+            self._current_script = None
+
+
+def require_https_url(value: str, label: str) -> None:
+    parsed = urlparse(value)
+    if parsed.scheme != "https" or not parsed.netloc:
+        raise WorkflowError(f"{label} must be an absolute HTTPS URL: {value!r}")
+
+
+def validate_feed_and_sitemap(
+    website: Path,
+    entries: Sequence[tuple[date, Path, dict[str, Any]]],
+    base_url: str,
+) -> None:
+    feed_path = website / "feed.xml"
+    sitemap_path = website / "sitemap.xml"
+    try:
+        feed_root = ET.parse(feed_path).getroot()
+    except (OSError, ET.ParseError) as exc:
+        raise WorkflowError(f"Could not parse RSS feed: {exc}") from exc
+    if feed_root.tag != "rss" or feed_root.get("version") != "2.0":
+        raise WorkflowError("feed.xml is not an RSS 2.0 document")
+    channel = feed_root.find("channel")
+    if channel is None:
+        raise WorkflowError("feed.xml has no channel")
+    expected_channel = {
+        "title": SITE_TITLE,
+        "link": base_url,
+        "description": SITE_DESCRIPTION,
+        "language": SITE_LANGUAGE,
+    }
+    for element, expected in expected_channel.items():
+        if channel.findtext(element) != expected:
+            raise WorkflowError(f"feed.xml has an incorrect channel {element}")
+    self_link = channel.find(f"{{{ATOM_NAMESPACE}}}link")
+    if (
+        self_link is None
+        or self_link.get("href") != base_url + "feed.xml"
+        or self_link.get("rel") != "self"
+        or self_link.get("type") != "application/rss+xml"
+    ):
+        raise WorkflowError("feed.xml has an incorrect self link")
+
+    items = channel.findall("item")
+    expected_entries = list(reversed(entries[-30:]))
+    if len(items) != len(expected_entries):
+        raise WorkflowError("feed.xml does not contain the newest 30 entries")
+    guids: set[str] = set()
+    for item, (entry_date, source, metadata) in zip(items, expected_entries):
+        canonical = entry_url(base_url, entry_date)
+        guid = item.find("guid")
+        values = {
+            "title": item.findtext("title"),
+            "link": item.findtext("link"),
+            "description": item.findtext("description"),
+        }
+        expected = {
+            "title": str(metadata["title"]),
+            "link": canonical,
+            "description": article_summary(
+                source.joinpath("article.md").read_text(encoding="utf-8")
+            ),
+        }
+        if values != expected:
+            raise WorkflowError(f"feed.xml item content is incorrect for {entry_date}")
+        if (
+            guid is None
+            or guid.text != canonical
+            or guid.get("isPermaLink") != "true"
+            or canonical in guids
+        ):
+            raise WorkflowError(f"feed.xml GUID is incorrect for {entry_date}")
+        guids.add(canonical)
+        try:
+            published = parsedate_to_datetime(item.findtext("pubDate") or "")
+        except (TypeError, ValueError) as exc:
+            raise WorkflowError(f"feed.xml has an invalid date for {entry_date}") from exc
+        expected_published = entry_published_datetime(entry_date, metadata).replace(
+            microsecond=0
+        )
+        if (
+            published is None
+            or published.tzinfo is None
+            or published.astimezone(UTC) != expected_published
+        ):
+            raise WorkflowError(f"feed.xml has an incorrect date for {entry_date}")
+        require_https_url(canonical, "RSS item URL")
+
+    try:
+        sitemap_root = ET.parse(sitemap_path).getroot()
+    except (OSError, ET.ParseError) as exc:
+        raise WorkflowError(f"Could not parse XML sitemap: {exc}") from exc
+    if sitemap_root.tag != f"{{{SITEMAP_NAMESPACE}}}urlset":
+        raise WorkflowError("sitemap.xml is not a sitemaps.org urlset")
+    namespace = {"sm": SITEMAP_NAMESPACE}
+    sitemap_items = sitemap_root.findall("sm:url", namespace)
+    newest_date, _, newest_metadata = entries[-1]
+    expected_sitemap = [
+        (
+            base_url,
+            iso_utc(entry_modified_datetime(newest_date, newest_metadata)),
+        )
+    ] + [
+        (
+            entry_url(base_url, entry_date),
+            iso_utc(entry_modified_datetime(entry_date, metadata)),
+        )
+        for entry_date, _, metadata in entries
+    ]
+    actual_sitemap = [
+        (
+            item.findtext("sm:loc", default="", namespaces=namespace),
+            item.findtext("sm:lastmod", default="", namespaces=namespace),
+        )
+        for item in sitemap_items
+    ]
+    if actual_sitemap != expected_sitemap:
+        raise WorkflowError("sitemap.xml URLs or modification dates are incorrect")
+    for location, _ in actual_sitemap:
+        require_https_url(location, "Sitemap URL")
 
 
 def validate_site() -> None:
@@ -1280,7 +1651,13 @@ def validate_site() -> None:
             "Website dated directories do not match entry sources: "
             f"website={sorted(dated_directories)}, entries={sorted(entry_names)}"
         )
-    allowed_root = {"index.html", "about.html", "style.css"} | entry_names
+    allowed_root = {
+        "index.html",
+        "about.html",
+        "style.css",
+        "feed.xml",
+        "sitemap.xml",
+    } | entry_names
     unexpected_root = sorted(path.name for path in website.iterdir() if path.name not in allowed_root)
     if unexpected_root:
         raise WorkflowError("Unexpected public website artifacts: " + ", ".join(unexpected_root))
@@ -1296,6 +1673,7 @@ def validate_site() -> None:
                 f"Unexpected public artifacts for {entry_name}: "
                 + ", ".join(unexpected_entry)
             )
+    parsed_pages: dict[Path, SiteHTMLParser] = {}
     for page in pages:
         source = page.read_text(encoding="utf-8")
         if "{{" in source or "}}" in source:
@@ -1306,13 +1684,21 @@ def validate_site() -> None:
             parser.close()
         except Exception as exc:
             raise WorkflowError(f"Could not parse {page}: {exc}") from exc
-        if parser.script_tags:
+        parsed_pages[page] = parser
+        invalid_scripts = [
+            script for script in parser.scripts
+            if script["type"] != "application/ld+json"
+        ]
+        if invalid_scripts:
             raise WorkflowError(f"JavaScript is not permitted in {page}")
         if DATE_RE.fullmatch(page.parent.name):
-            if parser.images != 1 or parser.details != 1:
+            if parser.images != 1 or parser.details != 1 or len(parser.scripts) != 1:
                 raise WorkflowError(
-                    f"Entry page must have one figure and one code disclosure: {page}"
+                    "Entry page must have one figure, one code disclosure, and one "
+                    f"JSON-LD block: {page}"
                 )
+        elif parser.scripts:
+            raise WorkflowError(f"JSON-LD is only permitted on dated entry pages: {page}")
         for reference in parser.references:
             parsed = urlparse(reference)
             if parsed.scheme:
@@ -1330,12 +1716,128 @@ def validate_site() -> None:
                 candidate /= "index.html"
             if not candidate.exists():
                 raise WorkflowError(f"Broken local reference in {page}: {reference}")
+
+    home = website / "index.html"
+    home_parser = parsed_pages[home]
+    home_canonicals = [
+        link.get("href", "")
+        for link in home_parser.links
+        if "canonical" in link.get("rel", "").lower().split()
+    ]
+    if len(home_canonicals) != 1:
+        raise WorkflowError("Homepage must have exactly one canonical URL")
+    base_url = home_canonicals[0]
+    require_https_url(base_url, "Homepage canonical URL")
+    if not base_url.endswith("/"):
+        raise WorkflowError("Homepage canonical URL must end with a slash")
+
+    entries_by_name = {entry[0].isoformat(): entry for entry in entries}
+    newest_date = entries[-1][0]
+    for page, parser in parsed_pages.items():
+        is_home = page == home
+        is_entry = DATE_RE.fullmatch(page.parent.name) is not None
+        if not (is_home or is_entry):
+            continue
+        if is_home:
+            expected_canonical = base_url
+            expected_title = SITE_TITLE
+            expected_description = SITE_DESCRIPTION
+            expected_type = "website"
+            expected_image = entry_image_url(base_url, newest_date)
+            entry_data = None
+        else:
+            entry_data = entries_by_name[page.parent.name]
+            entry_date, source, metadata = entry_data
+            expected_canonical = entry_url(base_url, entry_date)
+            expected_title = str(metadata["title"])
+            expected_description = article_summary(
+                source.joinpath("article.md").read_text(encoding="utf-8")
+            )
+            expected_type = "article"
+            expected_image = entry_image_url(base_url, entry_date)
+
+        canonicals = [
+            link.get("href", "")
+            for link in parser.links
+            if "canonical" in link.get("rel", "").lower().split()
+        ]
+        feed_links = [
+            link.get("href", "")
+            for link in parser.links
+            if "alternate" in link.get("rel", "").lower().split()
+            and link.get("type", "").lower() == "application/rss+xml"
+        ]
+        if canonicals != [expected_canonical]:
+            raise WorkflowError(f"Incorrect canonical URL in {page}")
+        if feed_links != [base_url + "feed.xml"]:
+            raise WorkflowError(f"Incorrect RSS autodiscovery link in {page}")
+        expected_properties = {
+            "og:title": expected_title,
+            "og:description": expected_description,
+            "og:type": expected_type,
+            "og:url": expected_canonical,
+            "og:site_name": SITE_TITLE,
+            "og:image": expected_image,
+        }
+        for name, expected in expected_properties.items():
+            if parser.meta_properties.get(name) != [expected]:
+                raise WorkflowError(f"Incorrect {name} metadata in {page}")
+        if parser.meta_names.get("description") != [expected_description]:
+            raise WorkflowError(f"Incorrect description metadata in {page}")
+        for value in (expected_canonical, expected_image, base_url + "feed.xml"):
+            require_https_url(value, f"Metadata URL in {page}")
+
+        if entry_data is None:
+            if parser.meta_properties.get("article:published_time"):
+                raise WorkflowError("Homepage must not claim to be a published article")
+            continue
+
+        entry_date, _, metadata = entry_data
+        published = iso_utc(entry_published_datetime(entry_date, metadata))
+        modified = iso_utc(entry_modified_datetime(entry_date, metadata))
+        if parser.meta_properties.get("article:published_time") != [published]:
+            raise WorkflowError(f"Incorrect article publication time in {page}")
+        try:
+            structured = json.loads(parser.scripts[0]["content"])
+        except json.JSONDecodeError as exc:
+            raise WorkflowError(f"Invalid JSON-LD in {page}: {exc}") from exc
+        expected_structured = {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": expected_title,
+            "description": expected_description,
+            "url": expected_canonical,
+            "mainEntityOfPage": {"@id": expected_canonical, "@type": "WebPage"},
+            "datePublished": published,
+            "dateModified": modified,
+            "image": expected_image,
+        }
+        for name, expected in expected_structured.items():
+            if structured.get(name) != expected:
+                raise WorkflowError(f"Incorrect JSON-LD {name} in {page}")
+        author = structured.get("author")
+        publisher = structured.get("publisher")
+        if not isinstance(author, dict) or author.get("name") != (
+            "Ipseological Analyses autonomous AI analyst"
+        ) or str(metadata["model"]) not in str(author.get("description", "")):
+            raise WorkflowError(f"JSON-LD has incorrect AI attribution in {page}")
+        if publisher != {
+            "@type": "Organization",
+            "name": SITE_TITLE,
+            "url": base_url,
+        }:
+            raise WorkflowError(f"JSON-LD has an incorrect publisher in {page}")
+
+    validate_feed_and_sitemap(website, entries, base_url)
     for entry in entries:
         entry_date = entry[0].isoformat()
         png_dimensions(website / entry_date / "visualization.png")
         if not (website / entry_date / "analysis.R").is_file():
             raise WorkflowError(f"Missing downloadable analysis for {entry_date}")
-    logging.info("Validated %s HTML pages and all local references", len(pages))
+    logging.info(
+        "Validated %s HTML pages, RSS, sitemap, metadata, and all local references",
+        len(pages),
+    )
 
 
 def run_checked(

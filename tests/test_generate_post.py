@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import csv
-from datetime import date
+from datetime import date, timedelta
+from email.utils import parsedate_to_datetime
 import gzip
 import json
 import os
@@ -11,6 +12,7 @@ import struct
 import tempfile
 import unittest
 from unittest import mock
+import xml.etree.ElementTree as ET
 
 from support import PROJECT_ROOT, load_script
 
@@ -329,12 +331,13 @@ class SiteRenderingTests(unittest.TestCase):
         generate.ROOT = self.old_root
         self.temporary.cleanup()
 
-    def add_entry(self, day: str, title: str) -> None:
+    def add_entry(self, day: str, title: str, article: str | None = None) -> None:
         directory = self.root / "entries" / day
         directory.mkdir()
         (directory / "analysis.R").write_text("library(tidyverse)\n", encoding="utf-8")
         (directory / "article.md").write_text(
-            "This is a safe article paragraph with **one finding**.\n", encoding="utf-8"
+            article or "This is a safe article paragraph with **one finding**.\n",
+            encoding="utf-8",
         )
         (directory / "visualization.png").write_bytes(tiny_png())
         (directory / "results.txt").write_text("N = 100\n", encoding="utf-8")
@@ -347,6 +350,7 @@ class SiteRenderingTests(unittest.TestCase):
             "prompt_id": day,
             "model": "test-model",
             "dataset_sha256": "a" * 64,
+            "generated_at_utc": f"{day}T12:34:56+00:00",
         }
         (directory / "metadata.json").write_text(
             json.dumps(metadata), encoding="utf-8"
@@ -366,6 +370,147 @@ class SiteRenderingTests(unittest.TestCase):
         self.assertIn('href="../2026-11-17/">Next</a>', earlier)
         self.assertIn('aria-disabled="true">Next</span>', latest)
         self.assertTrue((self.root / "website/2026-11-17/analysis.R").is_file())
+        self.assertTrue((self.root / "website/feed.xml").is_file())
+        self.assertTrue((self.root / "website/sitemap.xml").is_file())
+
+    def test_social_metadata_rss_sitemap_and_json_ld_are_stable(self) -> None:
+        self.add_entry("2026-11-16", "Earlier result")
+        title = 'A "quoted" result & a <careful> comparison'
+        article = (
+            "The first result compares A & B while calling the pattern **careful**. "
+            "It is a real article-specific summary with enough context for metadata.\n\n"
+            "## Method\n\nThe rest of the article explains the method.\n"
+        )
+        self.add_entry("2026-11-17", title, article)
+        generate.render_site(self.config)
+        generate.validate_site()
+
+        tracked = {
+            relative: (self.root / "website" / relative).read_bytes()
+            for relative in (
+                "index.html",
+                "2026-11-16/index.html",
+                "2026-11-17/index.html",
+                "feed.xml",
+                "sitemap.xml",
+            )
+        }
+        mtimes = {
+            relative: (self.root / "website" / relative).stat().st_mtime_ns
+            for relative in tracked
+        }
+        generate.render_site(self.config)
+        self.assertEqual(
+            tracked,
+            {
+                relative: (self.root / "website" / relative).read_bytes()
+                for relative in tracked
+            },
+        )
+        self.assertEqual(
+            mtimes,
+            {
+                relative: (self.root / "website" / relative).stat().st_mtime_ns
+                for relative in tracked
+            },
+        )
+
+        feed = ET.parse(self.root / "website/feed.xml").getroot()
+        channel = feed.find("channel")
+        self.assertIsNotNone(channel)
+        assert channel is not None
+        self.assertEqual(channel.findtext("title"), "Ipseological Analyses")
+        self.assertEqual(channel.findtext("language"), "en-US")
+        items = channel.findall("item")
+        self.assertEqual([item.findtext("title") for item in items], [title, "Earlier result"])
+        self.assertEqual(
+            items[0].findtext("link"),
+            "https://example.com/automated-ipseology/2026-11-17/",
+        )
+        self.assertEqual(items[0].findtext("guid"), items[0].findtext("link"))
+        self.assertEqual(
+            parsedate_to_datetime(items[0].findtext("pubDate") or "").isoformat(),
+            "2026-11-17T12:34:56+00:00",
+        )
+        self.assertIn("A & B", items[0].findtext("description") or "")
+
+        namespace = {"sm": generate.SITEMAP_NAMESPACE}
+        sitemap = ET.parse(self.root / "website/sitemap.xml").getroot()
+        locations = [
+            item.findtext("sm:loc", namespaces=namespace)
+            for item in sitemap.findall("sm:url", namespace)
+        ]
+        self.assertEqual(
+            locations,
+            [
+                "https://example.com/automated-ipseology/",
+                "https://example.com/automated-ipseology/2026-11-16/",
+                "https://example.com/automated-ipseology/2026-11-17/",
+            ],
+        )
+
+        homepage_parser = generate.SiteHTMLParser()
+        homepage_parser.feed(
+            (self.root / "website/index.html").read_text(encoding="utf-8")
+        )
+        self.assertEqual(homepage_parser.meta_properties["og:type"], ["website"])
+        self.assertEqual(homepage_parser.meta_properties["og:title"], ["Ipseological Analyses"])
+        self.assertEqual(homepage_parser.scripts, [])
+
+        article_source = (self.root / "website/2026-11-17/index.html").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn(r"\u003ccareful\u003e", article_source)
+        self.assertNotIn("<careful>", article_source)
+        article_parser = generate.SiteHTMLParser()
+        article_parser.feed(article_source)
+        self.assertEqual(article_parser.meta_properties["og:title"], [title])
+        self.assertEqual(article_parser.meta_properties["og:type"], ["article"])
+        self.assertEqual(
+            article_parser.meta_properties["og:image"],
+            ["https://example.com/automated-ipseology/2026-11-17/visualization.png"],
+        )
+        structured = json.loads(article_parser.scripts[0]["content"])
+        self.assertEqual(structured["@type"], "BlogPosting")
+        self.assertEqual(structured["headline"], title)
+        self.assertEqual(structured["datePublished"], "2026-11-17T12:34:56Z")
+        self.assertEqual(structured["dateModified"], "2026-11-17T12:34:56Z")
+        self.assertEqual(
+            structured["author"]["name"],
+            "Ipseological Analyses autonomous AI analyst",
+        )
+        self.assertIn("test-model", structured["author"]["description"])
+        self.assertEqual(structured["publisher"]["name"], "Ipseological Analyses")
+
+    def test_feed_is_limited_to_30_entries_while_sitemap_keeps_all(self) -> None:
+        first = date(2026, 1, 1)
+        for offset in range(31):
+            day = (first + timedelta(days=offset)).isoformat()
+            self.add_entry(day, f"Result {offset:02d}")
+        generate.render_site(self.config)
+        generate.validate_site()
+
+        feed = ET.parse(self.root / "website/feed.xml").getroot()
+        items = feed.findall("channel/item")
+        self.assertEqual(len(items), 30)
+        self.assertEqual(items[0].findtext("title"), "Result 30")
+        self.assertEqual(items[-1].findtext("title"), "Result 01")
+        self.assertNotIn("Result 00", [item.findtext("title") for item in items])
+
+        namespace = {"sm": generate.SITEMAP_NAMESPACE}
+        sitemap = ET.parse(self.root / "website/sitemap.xml").getroot()
+        self.assertEqual(len(sitemap.findall("sm:url", namespace)), 32)
+
+    def test_site_validation_rejects_broken_feed_metadata(self) -> None:
+        self.add_entry("2026-11-17", "A valid result")
+        generate.render_site(self.config)
+        feed = self.root / "website/feed.xml"
+        feed.write_text(
+            feed.read_text(encoding="utf-8").replace("<language>en-US</language>", ""),
+            encoding="utf-8",
+        )
+        with self.assertRaisesRegex(generate.WorkflowError, "channel language"):
+            generate.validate_site()
 
 
 class MockedDailyWorkflowTests(unittest.TestCase):
