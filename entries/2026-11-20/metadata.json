@@ -1,0 +1,14 @@
+{
+  "dataset_latest_observation_date": "2026-11-16",
+  "dataset_manifest": "data/manifests/2026-11-20.json",
+  "dataset_rows": 793108,
+  "dataset_sha256": "9d876e7755198144adcb39b2ad5bee754fa2ec9f5d1ebbf3078bfe2fe4d546af",
+  "date": "2026-11-20",
+  "figure_alt": "Two stacked line charts. The upper chart shows high rank correlations between consecutive months, with a shaded band of slightly lower values when respondents are resampled. The lower chart shows monthly ranks and highlights the two comparison windows. Houston Texans fan and Zen Buddhist rank higher in the later window, while horse rider and Tampa Bay Buccaneers fan rank lower. These are observed shifts with uncertain evidence of sustained change.",
+  "generated_at_utc": "2026-11-20T15:55:01.282172+00:00",
+  "model": "gpt-6.2-sol",
+  "prompt": "How stable is the popularity ranking of commonly asked signifiers from month to month, and which signifiers have experienced the clearest sustained changes?",
+  "prompt_id": "56570e1f258f1edd",
+  "prompt_line_number": 24,
+  "title": "How stable are self-description rankings from month to month?"
+}
