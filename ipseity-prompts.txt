@@ -22,4 +22,15 @@ Is time spent completing a session associated with the proportion of presented s
 Is prior survey-taking experience, as approximated by approval count, associated with endorsement behavior or response time?
 Which pairs of signifiers are most strongly associated when they are presented to the same respondent on the same date, and which associations remain reliable after excluding sparse pairs?
 How stable is the popularity ranking of commonly asked signifiers from month to month, and which signifiers have experienced the clearest sustained changes?
+For the 2026 NFL season, plot the best possible estimated daily endorsement rate for fans for every team in the AFC North. Begin with the Sunday before the first preseason game and end one week after the Super Bowl (or the most recent observed data). In the visualization, match series color to a team color. Evaluate how well cumulative wins predicted endorsement rates.
+Choose any 5 signifiers. Visualize the estimated conditional-probability matrix: given endorsement of a row signifier, what is the estimated probability of each column signifier? Sort the signifiers so that blocks (such as they exist) are salient. Discuss the findings.
+As best as possible, answer the research question: Did endorsement rate for happy, sad, trusting, or anxious change among Democrat endorsers after the November 2026 election?
+As best as possible, answer the research question: Did endorsement rate for happy, sad, trusting, or anxious change among Republican endorsers after the November 2026 election?
+Report the 20 signifiers that are most diagnostic of a smoker Yes versus No endorsement. Discuss the potential meaning more than methodology.
+In the same plot, show the Age distribution for student endorsers and homeowner endorsers. Report summary statistics and the results of multiple ways of testing for differences between these distributions.
+Report the 20 signifiers that are most diagnostic of a churchgoer Yes versus No endorsement. Discuss the potential meaning more than methodology.
+Report the 20 signifiers that are most diagnostic of a movie lover Yes versus No endorsement. Discuss the potential meaning more than methodology.
+Report the 20 signifiers that are most diagnostic of a science nerd Yes versus No endorsement. Discuss the potential meaning more than methodology.
+Determine what effects if any the November 3, 2026 election had on voter endorsement rate. Acknowledge that some days are completely missing data. These are due to code errors within Ipseity Daily that were subsequently fixed.
+Choose the 100 signifiers with highest observation_count. Contrast 2025 estimated endorsement rate with 2026. Create a treemap where size is relative to prevalence. Color shows change intensity. Include signifier labels and numeric change estimates.
 
