@@ -1,0 +1,14 @@
+{
+  "dataset_latest_observation_date": "2026-11-20",
+  "dataset_manifest": "data/manifests/2026-11-21.json",
+  "dataset_rows": 794745,
+  "dataset_sha256": "5c9f15a4d162f5c1d591e8db0f999c902b5784b2d1266dd3f25e1b557282c5b5",
+  "date": "2026-11-21",
+  "figure_alt": "Horizontal dot-and-interval chart of the 20 largest gaps in signifier Yes rates between Democrat Yes and No. Liberal has the largest gap toward Democrat Yes, and Trump supporter has the largest gap toward Democrat No. All intervals stay on one side of zero.",
+  "generated_at_utc": "2026-11-21T07:22:53.783264+00:00",
+  "model": "gpt-6.2-sol",
+  "prompt": "Report the 20 signifiers that are most diagnostic of a Democrat Yes versus No. Discuss the potential meaning more than methodology.",
+  "prompt_id": "9f91008e3c6a80b4",
+  "prompt_line_number": 10,
+  "title": "The signifiers that distinguish Democrat Yes from No"
+}
