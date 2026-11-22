@@ -1,0 +1,14 @@
+{
+  "dataset_latest_observation_date": "2026-11-21",
+  "dataset_manifest": "data/manifests/2026-11-22.json",
+  "dataset_rows": 796390,
+  "dataset_sha256": "3b67ac4f9103b2685c5ee1e43b0189b240b29639b8337490beee21b5181bec6b",
+  "date": "2026-11-22",
+  "figure_alt": "Horizontal dot-and-interval chart showing the share of repeat respondents who gave both Yes and No for each signifier. Anxious, dreamer, and energetic had the highest switching rates. Male had the lowest, followed by Cleveland Browns fan and American.",
+  "generated_at_utc": "2026-11-22T07:25:43.196740+00:00",
+  "model": "gpt-6.2-sol",
+  "prompt": "Among repeat participants, which frequently asked signifiers show the greatest within-person stability, and which show the most switching, counting only respondent–signifier pairs observed on multiple dates?",
+  "prompt_id": "bab18c76a6973682",
+  "prompt_line_number": 12,
+  "title": "Which self-descriptions stayed stable across repeat surveys?"
+}

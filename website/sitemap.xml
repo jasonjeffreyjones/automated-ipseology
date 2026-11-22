@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://jasonjones.ninja/automated-ipseology/</loc>
-    <lastmod>2026-11-21T07:22:53.783264Z</lastmod>
+    <lastmod>2026-11-22T07:25:43.196740Z</lastmod>
   </url>
   <url>
     <loc>https://jasonjones.ninja/automated-ipseology/2026-11-18/</loc>
@@ -19,5 +19,9 @@
   <url>
     <loc>https://jasonjones.ninja/automated-ipseology/2026-11-21/</loc>
     <lastmod>2026-11-21T07:22:53.783264Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jasonjones.ninja/automated-ipseology/2026-11-22/</loc>
+    <lastmod>2026-11-22T07:25:43.196740Z</lastmod>
   </url>
 </urlset>

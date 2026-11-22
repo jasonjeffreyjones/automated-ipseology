@@ -1,0 +1,50 @@
+Ipseity Daily | Repeat answers to frequent signifiers
+Snapshot spans 2025-07-08 through 2026-11-21.
+A pair was eligible when the same respondent answered the same signifier on at least two distinct dates.
+Rankings cover the 15 signifiers with the most eligible respondents. Ties at the cutoff use alphabetical order.
+A pair switched if both a Yes and a No were observed. A pair was stable if all observed answers agreed.
+The first-two measure compares the first and second observed answers for the pair.
+Exact binomial confidence intervals target 95% simultaneous coverage across 30 switching estimates.
+
+scope	observations	respondent_days	respondents	observation_dates	signifiers
+Full snapshot	796390	10197	5476	484	707
+All eligible respondent-signifier pairs	302347	6424	1703	484	704
+Eligible pairs for ranked signifiers	94501	6424	1703	484	15
+The full snapshot contained 94599 eligible respondent-signifier pairs.
+The ranked signifiers accounted for 25210 eligible respondent-signifier pairs.
+
+Switching across all observed dates (highest rate first)
+rank	signifier	respondents	observations	ever_switched	always_yes	always_no	switch_pct	switch_low_pct	switch_high_pct	stable_pct	stable_low_pct	stable_high_pct
+1	anxious	1688	6341	485	544	659	28.7	25.3	32.3	71.3	67.7	74.7
+2	dreamer	1675	6256	475	900	300	28.4	25.0	31.9	71.6	68.1	75.0
+3	energetic	1678	6287	458	632	588	27.3	23.9	30.8	72.7	69.2	76.1
+4	sad	1674	6208	360	231	1083	21.5	18.4	24.8	78.5	75.2	81.6
+5	science nerd	1674	6242	348	418	908	20.8	17.8	24.1	79.2	75.9	82.2
+6	curious	1691	6360	339	1289	63	20.0	17.1	23.3	80.0	76.7	82.9
+7	calm	1681	6269	307	1251	123	18.3	15.4	21.4	81.7	78.6	84.6
+8	movie lover	1677	6299	278	1142	257	16.6	13.8	19.6	83.4	80.4	86.2
+9	introverted	1675	6254	260	986	429	15.5	12.9	18.5	84.5	81.5	87.1
+10	friend	1684	6336	205	1416	63	12.2	9.8	14.9	87.8	85.1	90.2
+11	homeowner	1683	6285	125	810	748	7.4	5.6	9.6	92.6	90.4	94.4
+12	student	1691	6362	122	116	1453	7.2	5.4	9.4	92.8	90.6	94.6
+13	American	1674	6313	63	1597	14	3.8	2.5	5.5	96.2	94.5	97.5
+14	Cleveland Browns fan	1676	6338	54	36	1586	3.2	2.0	4.8	96.8	95.2	98.0
+15	male	1689	6351	16	768	905	0.9	0.4	1.9	99.1	98.1	99.6
+
+Switching from the first to the second observed answer (highest rate first)
+rank	signifier	first_two_switched	exactly_two_dates	median_first_gap_days	switch_pct	switch_low_pct	switch_high_pct
+1	anxious	359	864	38	21.3	18.2	24.5
+2	energetic	340	865	39	20.3	17.3	23.5
+3	dreamer	333	861	39	19.9	16.9	23.1
+4	science nerd	257	858	39	15.4	12.7	18.3
+5	sad	255	861	38	15.2	12.6	18.2
+6	curious	240	865	38	14.2	11.6	17.0
+7	calm	218	869	39	13.0	10.5	15.7
+8	movie lover	189	865	39	11.3	9.0	13.9
+9	introverted	187	866	39	11.2	8.9	13.8
+10	friend	142	863	38	8.4	6.4	10.8
+11	homeowner	82	867	38	4.9	3.4	6.7
+12	student	81	869	39	4.8	3.3	6.6
+13	American	46	858	38	2.7	1.7	4.2
+14	Cleveland Browns fan	37	858	38	2.2	1.2	3.6
+15	male	7	863	38	0.4	0.1	1.2
