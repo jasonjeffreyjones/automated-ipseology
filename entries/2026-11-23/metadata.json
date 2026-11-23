@@ -1,0 +1,14 @@
+{
+  "dataset_latest_observation_date": "2026-11-22",
+  "dataset_manifest": "data/manifests/2026-11-23.json",
+  "dataset_rows": 797977,
+  "dataset_sha256": "311ec62f8a1b3e642f2dbe5bc2ecf07ff8a128e77ba5c0d540942454ee1242b5",
+  "date": "2026-11-23",
+  "figure_alt": "Horizontal dot-and-interval chart ranking 20 signifiers by the absolute same-day gap in Yes answers between people who answered Yes and No to smoker. Gamer has the largest gap at 19 percentage points toward smoker Yes. Artist and beer lover have the next largest positive gaps, and homeowner has the largest gap toward smoker No. Only the gamer interval stays on one side of zero.",
+  "generated_at_utc": "2026-11-23T07:22:42.399058+00:00",
+  "model": "gpt-6.2-sol",
+  "prompt": "Report the 20 signifiers that are most diagnostic of a smoker Yes versus No endorsement. Discuss the potential meaning more than methodology.",
+  "prompt_id": "bdaea461d6c26c47",
+  "prompt_line_number": 29,
+  "title": "Which signifiers best distinguish smoker Yes from No?"
+}

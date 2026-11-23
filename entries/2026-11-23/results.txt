@@ -1,0 +1,65 @@
+Snapshot
+Observation dates: 2025-07-08 through 2026-11-22
+Response observations: 797977
+Respondent-days: 10218
+Unique respondents: 5485
+Distinct signifiers including smoker: 707
+
+Smoker answers
+Response observations and respondent-days: 1479
+Unique respondents: 1212
+Yes respondent-days: 245 and unique respondents: 202
+No respondent-days: 1234 and unique respondents: 1018
+
+Same-day comparisons
+Other signifiers with any same-respondent, same-day pairing: 705
+Minimum respondent-days and distinct respondents per smoker group: 50 and 20
+Eligible signifiers: 32
+Ranked signifiers displayed: 20
+Top signifier response observations: 12756
+Top signifier respondent-days: 666
+Top signifier unique respondents: 596
+Top signifier smoker Yes respondent-days: 216 and unique respondents: 184
+Top signifier smoker No respondent-days: 450 and unique respondents: 415
+Positive gaps among displayed signifiers: 9
+Negative gaps among displayed signifiers: 11
+Bonferroni simultaneous confidence level: 95%
+Eligible gaps with intervals excluding zero: 1
+Displayed gaps with intervals excluding zero: 1
+
+Rates average the same dates with the same overlap weights in both groups.
+Rank uses the absolute unrounded gap. Rates are percentages and gaps are percentage points.
+Intervals account for respondent clustering and all eligible comparisons.
+rank	signifier	dates	yes_days	no_days	yes_people	no_people	total_people	adjusted_yes_pct	adjusted_no_pct	gap_pp	lower_pp	upper_pp
+1	gamer	162	204	419	175	386	558	63.9	44.8	+19.0	+4.6	+33.5
+2	artist	161	202	418	173	387	557	39.2	25.6	+13.6	-0.1	+27.2
+3	beer lover	164	205	421	173	389	559	43.4	31.9	+11.5	-2.6	+25.7
+4	homeowner	173	214	450	182	415	594	38.0	47.1	-9.1	-23.5	+5.4
+5	investor	164	206	422	175	388	560	41.0	49.7	-8.7	-23.1	+5.6
+6	sad	167	210	428	183	399	579	29.2	20.6	+8.6	-3.8	+20.9
+7	dreamer	167	209	429	181	399	577	75.0	67.8	+7.2	-5.4	+19.8
+8	Democrat	168	210	428	178	397	573	39.7	46.4	-6.7	-21.8	+8.4
+9	AI creator	165	207	425	175	393	565	14.5	7.9	+6.5	-2.7	+15.8
+10	healthy	168	211	428	182	397	576	74.7	81.3	-6.5	-17.9	+4.8
+11	male	167	208	434	182	402	581	45.6	51.7	-6.1	-21.4	+9.2
+12	anxious	171	214	440	184	407	588	52.1	46.3	+5.9	-8.1	+19.8
+13	Buffalo Bills fan	164	205	422	173	389	559	11.4	6.9	+4.5	-5.9	+14.9
+14	MAGA (Make America Great Again)	169	209	422	177	390	564	14.6	18.6	-3.9	-15.5	+7.6
+15	Republican	168	209	429	177	397	572	25.0	28.5	-3.6	-17.5	+10.4
+16	confident	172	215	442	183	411	591	68.5	72.0	-3.5	-17.5	+10.5
+17	happy	166	209	426	182	394	573	75.0	78.1	-3.1	-15.5	+9.3
+18	calm	167	209	431	181	400	578	85.1	87.9	-2.9	-12.2	+6.5
+19	movie lover	173	216	441	184	408	589	78.0	75.2	+2.7	-9.4	+14.9
+20	voter	165	206	423	174	389	560	76.6	78.5	-1.9	-15.5	+11.7
+21	apolitical	162	201	406	172	375	544	19.2	17.3	+1.9	-9.5	+13.2
+22	restaurant server	165	207	429	175	396	568	3.7	2.1	+1.7	-3.4	+6.8
+23	energetic	169	212	431	180	400	577	57.0	55.4	+1.6	-13.0	+16.2
+24	curious	171	214	445	183	411	591	84.9	86.4	-1.5	-12.9	+10.0
+25	friend	169	212	437	182	405	584	89.9	91.4	-1.5	-10.1	+7.2
+26	introverted	172	214	441	182	409	589	64.4	65.6	-1.2	-15.9	+13.5
+27	science nerd	172	215	445	183	411	591	33.2	32.3	+0.9	-13.0	+14.9
+28	American	172	214	441	183	407	587	97.1	97.7	-0.6	-6.7	+5.5
+29	trusting	170	212	435	182	401	580	69.5	70.0	-0.4	-13.8	+12.9
+30	student	173	216	448	184	413	594	12.1	11.7	+0.4	-8.5	+9.2
+31	churchgoer	173	216	445	184	410	591	24.2	24.3	-0.1	-13.0	+12.7
+32	Cleveland Browns fan	172	213	441	181	407	585	3.4	3.5	-0.1	-5.2	+5.1
