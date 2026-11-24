@@ -1,0 +1,22 @@
+Full data: 799580 answers, 10239 respondent-days, 5491 unique respondents.
+Observation dates: 2025-07-08 through 2026-11-23, 486 observed dates.
+Usable duration: 799268 answers, 10235 respondent-days, 5489 unique respondents.
+Excluded for missing, conflicting or nonpositive duration: 4 respondent-days.
+Respondent-days with all duration values missing: 4.
+Distinct answered sets among timed respondent-days: 10235.
+Most common answered count: 80 answers.
+Distinct signifiers in timed sessions: 707.
+Mean Yes share across timed respondent-days: 34.80%.
+Recorded duration range in export units: 73 to 47992.
+Tail check includes times between sample quantiles at 1% and 99% (98 to 793.66 export units).
+
+Slope estimates in percentage points per doubling of recorded duration.
+Linear regressions weight respondent-days equally. Intervals use respondent-clustered standard errors.
+Model | Slope | 95% confidence interval | Answers | Respondent-days | Unique respondents
+Unadjusted | +2.02 | [+1.55, +2.49] | 799268 | 10235 | 5489
+Answer count | +1.97 | [+1.51, +2.42] | 799268 | 10235 | 5489
+Count and item mix | +1.78 | [+1.35, +2.22] | 799268 | 10235 | 5489
+Count, item mix and date | +1.74 | [+1.31, +2.17] | 799268 | 10235 | 5489
+Count, item mix and date, excluding tails | +2.28 | [+1.84, +2.71] | 783641 | 10035 | 5414
+Count, item mix and date, pooled repeat respondents | +1.81 | [+1.26, +2.35] | 503293 | 6454 | 1708
+Count, item mix and date, within repeat respondents | +0.56 | [+0.17, +0.95] | 503293 | 6454 | 1708

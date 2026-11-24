@@ -1,0 +1,14 @@
+{
+  "dataset_latest_observation_date": "2026-11-23",
+  "dataset_manifest": "data/manifests/2026-11-24.json",
+  "dataset_rows": 799580,
+  "dataset_sha256": "bce885235d69c5b431538669bfee3ed9e323bb02cc6ad45ef7700ce9ce841652",
+  "date": "2026-11-24",
+  "figure_alt": "Horizontal dot-and-whisker chart of the difference in the Yes share per doubling of recorded completion time. The estimate moves slightly toward zero after adjustment for answer count, the signifiers answered, and date. Every confidence interval lies above zero.",
+  "generated_at_utc": "2026-11-24T07:23:46.472670+00:00",
+  "model": "gpt-6.2-sol",
+  "prompt": "Is time spent completing a session associated with the proportion of presented signifiers endorsed, and does the relationship persist after accounting for the number and composition of questions asked?",
+  "prompt_id": "8fb829a502dd7651",
+  "prompt_line_number": 21,
+  "title": "Did longer survey sessions have a higher share of Yes answers?"
+}
