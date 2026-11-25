@@ -1,0 +1,14 @@
+{
+  "dataset_latest_observation_date": "2026-11-24",
+  "dataset_manifest": "data/manifests/2026-11-25.json",
+  "dataset_rows": 801166,
+  "dataset_sha256": "c98354fcaff33836d3c1d2abcee2ff3017e5777c648e2b4f9f6bf2d93f921655",
+  "date": "2026-11-25",
+  "figure_alt": "Horizontal dot-and-interval chart of the 20 largest gaps in signifier Yes rates between movie-lover Yes and No groups on the same survey dates. Film lover has by far the largest gap, followed by Marvel fan and Disney fan. All dots favor the movie-lover Yes group, and half the uncertainty intervals cross zero.",
+  "generated_at_utc": "2026-11-25T07:24:21.767549+00:00",
+  "model": "gpt-6.2-sol",
+  "prompt": "Report the 20 signifiers that are most diagnostic of a movie lover Yes versus No endorsement. Discuss the potential meaning more than methodology.",
+  "prompt_id": "1a6a30f74506c88a",
+  "prompt_line_number": 32,
+  "title": "What goes with calling yourself a movie lover?"
+}
