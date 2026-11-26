@@ -1,0 +1,16 @@
+{
+  "acquired_at_utc": "2026-11-26T07:15:07.773992+00:00",
+  "columns": 16,
+  "earliest_observation_date": "2025-07-08",
+  "latest_observation_date": "2026-11-25",
+  "local_snapshot_at_acquisition": "data/snapshots/2026-11-26-d3615e0efa5a0ecbe2dbca6f2f713b29b20655278f05a04160fafc6b097228f6.csv.gz",
+  "local_snapshot_retention": "latest-only",
+  "publication_date": "2026-11-26",
+  "respondent_days": 10281,
+  "respondents": 5506,
+  "rows": 802772,
+  "sha256": "d3615e0efa5a0ecbe2dbca6f2f713b29b20655278f05a04160fafc6b097228f6",
+  "signifiers": 707,
+  "source": "/home/ubuntu/ipseity-daily/data/ipseity.csv.gz",
+  "source_type": "local"
+}

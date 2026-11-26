@@ -1,0 +1,14 @@
+{
+  "dataset_latest_observation_date": "2026-11-25",
+  "dataset_manifest": "data/manifests/2026-11-26.json",
+  "dataset_rows": 802772,
+  "dataset_sha256": "d3615e0efa5a0ecbe2dbca6f2f713b29b20655278f05a04160fafc6b097228f6",
+  "date": "2026-11-26",
+  "figure_alt": "Horizontal dot-and-interval chart of the 20 largest same-day gaps in signifier Yes rates. Conservative, Trump supporter, and right-wing show the largest gaps toward higher rates among Republican Yes respondents, on the right. Anti-Trump shows the largest gap toward a higher rate among Republican No respondents, on the left. Every interval stays on its side of zero.",
+  "generated_at_utc": "2026-11-26T07:22:24.449167+00:00",
+  "model": "gpt-6.2-sol",
+  "prompt": "Report the 20 signifiers that are most diagnostic of a Republican Yes versus No. Discuss the potential meaning more than methodology.",
+  "prompt_id": "4772030b84e177a6",
+  "prompt_line_number": 9,
+  "title": "The 20 signifiers most diagnostic of a Republican Yes or No"
+}
