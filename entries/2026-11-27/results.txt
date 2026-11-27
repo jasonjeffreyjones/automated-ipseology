@@ -1,0 +1,29 @@
+Ipseity Daily (CC BY 4.0)
+Observation dates: 2025-07-08 through 2026-11-26
+Snapshot response observations: 804,340
+Snapshot respondent-days: 10,302
+Snapshot unique respondents: 5,516
+
+Response observations contributing to comparisons: 306,469
+Respondent-days contributing to comparisons: 6,503
+Unique respondents contributing to comparisons: 1,717
+Repeated respondent–signifier pairs: 95,642
+Consecutive comparisons: 210,827
+Changed answers across comparisons: 16,351 (7.8%)
+Observed gap range: 1 to 500 days
+
+1–7 days: 37,599 comparisons, 2,417 changes, 1,061 later respondent-days, 478 unique respondents. Change: 6.4% (95% CI 5.8% to 7.1%).
+8–30 days: 60,566 comparisons, 4,439 changes, 2,063 later respondent-days, 790 unique respondents. Change: 7.3% (95% CI 6.8% to 7.8%).
+31–90 days: 61,414 comparisons, 5,099 changes, 2,751 later respondent-days, 925 unique respondents. Change: 8.3% (95% CI 7.9% to 8.7%).
+91–180 days: 29,756 comparisons, 2,508 changes, 2,061 later respondent-days, 687 unique respondents. Change: 8.4% (95% CI 7.9% to 8.9%).
+181+ days: 21,492 comparisons, 1,888 changes, 1,447 later respondent-days, 563 unique respondents. Change: 8.8% (95% CI 8.2% to 9.4%).
+Longest minus shortest gap band: 2.36 percentage points (95% CI 1.63 to 3.08)
+
+Trend models use pairs with at least 2 comparisons (3 answers) and different gap lengths.
+Comparisons in trend models: 152,147
+Respondent–signifier pairs in trend models: 37,120
+Unique respondents in trend models: 832
+Example of doubling the gap: 15 to 30 days
+Pooled change per doubling of gap, on the trend-model sample: 0.43 percentage points (95% CI 0.32 to 0.54)
+Within-pair change per doubling of gap: 0.42 percentage points (95% CI 0.35 to 0.50)
+All confidence intervals account for clustering by respondent.

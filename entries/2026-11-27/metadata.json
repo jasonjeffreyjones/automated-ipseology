@@ -1,0 +1,14 @@
+{
+  "dataset_latest_observation_date": "2026-11-26",
+  "dataset_manifest": "data/manifests/2026-11-27.json",
+  "dataset_rows": 804340,
+  "dataset_sha256": "382b112a76c5ff3c6960646af004fa4640a9fb199e190f978b39eee88fe20702",
+  "date": "2026-11-27",
+  "figure_alt": "Horizontal dot plot of answer changes by days between repeat answers about the same signifier, with 95% confidence intervals. Rates rose from 6.4% at 1–7 days to 8.8% at 181+ days, with similar rates at 31–90 and 91–180 days.",
+  "generated_at_utc": "2026-11-27T07:21:46.091826+00:00",
+  "model": "gpt-6.2-sol",
+  "prompt": "Among repeated respondent–signifier observations, does a longer interval between sessions correspond to a greater chance of changing an answer?",
+  "prompt_id": "20ac10c348571a2f",
+  "prompt_line_number": 14,
+  "title": "Answers changed more often after longer gaps"
+}
