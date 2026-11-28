@@ -1,0 +1,14 @@
+{
+  "dataset_latest_observation_date": "2026-11-27",
+  "dataset_manifest": "data/manifests/2026-11-28.json",
+  "dataset_rows": 805937,
+  "dataset_sha256": "92d861dc2c37a788ec321b5256c63d72202c9e587d93c5167b40a7844693255a",
+  "date": "2026-11-28",
+  "figure_alt": "Dot-and-interval chart of adjusted changes in Yes answers, in percentage points from the first observed visit. Circles for all answered items show modest declines at later visits. Diamonds comparing the same items within each person are closer to zero, and all of their simultaneous confidence intervals include zero.",
+  "generated_at_utc": "2026-11-28T07:21:09.873553+00:00",
+  "model": "gpt-6.2-sol",
+  "prompt": "Does the proportion of asked signifiers that a person endorses tend to change across repeated participation, after accounting for differences in which signifiers were presented?",
+  "prompt_id": "c52f3b5adbfe3c25",
+  "prompt_line_number": 13,
+  "title": "Do repeat survey participants say Yes to fewer signifiers?"
+}

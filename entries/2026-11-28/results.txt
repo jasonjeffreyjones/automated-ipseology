@@ -1,0 +1,50 @@
+Snapshot date range: 2025-07-08 through 2026-11-27
+Snapshot response observations: 805937
+Snapshot respondent-days: 10323
+Snapshot respondents: 5528
+Snapshot signifiers: 707
+Snapshot observation dates: 490
+Repeat analysis response observations: 507867
+Repeat analysis respondent-days: 6514
+Repeat analysis respondents: 1719
+Matched analysis response observations: 307073
+Matched analysis respondent-days: 6514
+Matched analysis respondents: 1719
+Median elapsed days between first and second visits: 39
+Simultaneous confidence level: 95% across 12 displayed contrasts
+Primary joint test of visit group: F(6, 1718) = 4.809; p = 7.09904e-05
+
+Primary coverage by observed visit group and raw equal-visit Yes proportion
+Visit group | Response observations | Respondent-days | Respondents | Yes percent
+1 | 133313 | 1719 | 1719 | 35.12
+2 | 134851 | 1719 | 1719 | 34.90
+3 | 65927 | 838 | 838 | 34.62
+4 | 38860 | 494 | 494 | 34.35
+5 | 25527 | 325 | 325 | 33.18
+6–10 | 56805 | 725 | 230 | 33.43
+11+ | 52584 | 694 | 69 | 30.12
+
+Matched coverage by observed visit group
+Visit group | Response observations | Respondent-days | Respondents
+1 | 67906 | 1719 | 1719
+2 | 68693 | 1719 | 1719
+3 | 38104 | 838 | 838
+4 | 24683 | 494 | 494
+5 | 17333 | 325 | 325
+6–10 | 42810 | 725 | 230
+11+ | 47544 | 694 | 69
+
+Adjusted differences from the first observed visit in percentage points
+Analysis | Visit group | Estimate | Simultaneous 95% lower | Simultaneous 95% upper
+All answered items | 2 | -0.34 | -0.86 | +0.17
+All answered items | 3 | -0.45 | -1.17 | +0.28
+All answered items | 4 | -0.54 | -1.42 | +0.33
+All answered items | 5 | -1.35 | -2.37 | -0.33
+All answered items | 6–10 | -1.08 | -2.15 | -0.01
+All answered items | 11+ | -2.35 | -3.82 | -0.87
+Same items per person | 2 | -0.02 | -0.53 | +0.49
+Same items per person | 3 | -0.09 | -0.80 | +0.62
+Same items per person | 4 | -0.29 | -1.16 | +0.58
+Same items per person | 5 | -0.24 | -1.24 | +0.77
+Same items per person | 6–10 | -0.24 | -1.27 | +0.79
+Same items per person | 11+ | -1.13 | -2.53 | +0.26
